@@ -1,4 +1,5 @@
 import AppKit
+import CoreGraphics
 
 final class PetPanel: NSPanel {
     override var canBecomeKey: Bool { false }

@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 public enum PetGeometry {
     /// AppKit coordinates: positive y points up. Angle zero points up, clockwise.

@@ -1,4 +1,5 @@
 import AppKit
+import CoreGraphics
 import CheeseCore
 
 final class PetController: NSObject {
