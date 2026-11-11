@@ -7,7 +7,7 @@ permissions:
   contents: write
 jobs:
   release:
-    runs-on: macos-14
+    runs-on: macos-15
     concurrency:
       group: cheese-release
       cancel-in-progress: false
