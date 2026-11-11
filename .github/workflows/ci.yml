@@ -1,0 +1,39 @@
+name: Checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scripts-and-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash -n install.sh scripts/build.sh scripts/uninstall.sh
+      - run: python3 -m unittest discover -s tests -v
+      - run: python3 scripts/validate_assets.py
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test
+      - run: bash scripts/build.sh
+      - run: dist/CheesePet.app/Contents/MacOS/CheesePet --self-test
+      - name: Verify the packaged app starts and stays running
+        run: |
+          dist/CheesePet.app/Contents/MacOS/CheesePet &
+          PET_PID=$!
+          sleep 5
+          kill -0 "$PET_PID"
+          kill "$PET_PID"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CheesePet-macOS-universal
+          path: |
+            dist/CheesePet-macOS-universal.zip
+            dist/SHA256SUMS
